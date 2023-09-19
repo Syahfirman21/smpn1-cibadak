@@ -1,41 +1,80 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Register To Panel</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="{{ asset('asset/css/style.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('asset/css/login-form.css') }}">
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('asset/img/logo_sekolah.png') }}">
+	<title>Login To Panel</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="{{ asset('asset/css/style.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('asset/css/login-form.css') }}">
+	<link rel="shortcut icon" type="image/x-icon" href="{{ asset('asset/img/logo_sekolah.png') }}">
 </head>
 <body>
-    <div class="login">
-        <div class="logo">
-            <img src="{{ asset('asset/img/logo_sekolah.png') }}">
-            <div class="clear"></div>
-        </div>
-        <div class="form">
-            <form method="POST" action="{{ route('register') }}">
-                @csrf <!-- Untuk proteksi CSRF -->
+	<div class="login">
+		<div class="logo">
+			<img src="{{ asset('asset/img/logo_sekolah.png') }}">
+			<div class="clear"></div>
+		</div>
+		<div class="form">
+            @if (session('status'))
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+        @endif
 
-                <div class="input-group">
-                    <span class="email"></span><input type="text" name="name" placeholder="Name" value="{{ old('name') }}" required>
+        <form method="POST" action="{{ route('register') }}">
+            @csrf
+
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus placeholder="Nama">
+
+                    @error('name')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
+            </div>
 
-                <div class="input-group">
-                    <span class="email"></span><input type="email" name="email" placeholder="Email" value="{{ old('email') }}" required>
+            <div class="form-group row">
+
+                <div class="col-md-6">
+                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" placeholder="Email">
+
+                    @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
+            </div>
 
-                <div class="input-group">
-                    <span class="password"></span><input type="password" name="password" placeholder="Password" required>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password" placeholder="Password">
+
+                    @error('password')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
+            </div>
 
-                <div class="input-group">
-                    <span class="password"></span><input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+            <div class="form-group row">
+                <div class="col-md-6">
+                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password" placeholder="Konfirmasi Password">
                 </div>
+            </div>
 
-                <button name="submit" class="register-button">Register</button>
-            </form>
-        </div>
-    </div>
+            <div class="form-group row mb-0">
+                <div class="col-md-6 offset-md-4">
+                    <button type="submit" class="btn btn-primary">
+                        {{ __('Daftar') }}
+                    </button>
+                </div>
+            </div>
+        </form>
+		</div>
+	</div>
 </body>
 </html>

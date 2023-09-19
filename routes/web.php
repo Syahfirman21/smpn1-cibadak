@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\AgendaAdminController;
 use App\Http\Controllers\Admin\GuruController;
 
+
 use App\Http\Controllers\UserController;
 
 
@@ -86,46 +87,49 @@ Route::get('image/minimize/{img}', ['as'=>'minimize.image', function($img) {
 }]);
 
 
-
-// admin
-
-Route::middleware(['auth'])->prefix('admin')->group(function () {
-    Route::get('/', [GlobalAdminController::class, 'index'])->name('admin.dashboard');
-
-    Route::get('/home/edit/{id}', [GlobalAdminController::class, 'editHome'])->name('admin.home.edit');
-    Route::post('/home/update/{id}', [GlobalAdminController::class, 'updateHome'])->name('admin.home.update');
-
-    Route::get('/setting', [GlobalAdminController::class, 'settingSite'])->name('admin.setting');
-    Route::post('/setting/link', [GlobalAdminController::class, 'updateLink'])->name('admin.setting.link');
-    Route::post('/setting/password', [GlobalAdminController::class, 'updatePass'])->name('admin.setting.password');
-});
-
-
-
-
-// Authentication routes...
+// Login
+Route::get('/register', [UserController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [UserController::class, 'register']);
 Route::get('login', [UserController::class, 'showLoginForm'])->name('login');
-Route::post('login', [UserController::class, 'login']);
-Route::post('logout', [UserController::class, 'logout'])->name('logout');
+Route::post('/login', [UserController::class, 'login']);
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
 
 
+
+
+
+
+// Search
 Route::get('/search', [SearchController::class, 'search'])->name('search');
 Route::post('/search-redirect', [SearchController::class, 'searchRedirect'])->name('berita.search-redirect');
 
 
-
-
-
+// admin
+Route::prefix('admin')->middleware('auth')->group(function () {
+    Route::get('/', [GlobalAdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('dashboard', [GlobalAdminController::class, 'index'])->name('admin.dashboard');
     
+    Route::resource('berita', BeritaController::class);
+    Route::resource('agenda', AgendaAdminController::class);
+    Route::resource('gallery', GalleryController::class);
+    
+    Route::post('gallery/addCategory', [GalleryController::class, 'addCategory'])->name('admin.gallery.addCategory');
+    Route::resource('guru', GuruController::class);
+    
+    Route::prefix('ppdb')->group(function () {
+        Route::get('/', [PpdbController::class, 'index'])->name('admin.ppdb.index');
+        Route::get('/reguler', [PpdbController::class, 'index'])->name('admin.ppdb.regular');
+        Route::post('/reguler', [PpdbController::class, 'postRegular'])->name('admin.ppdb.regular_dt');
+        Route::get('/import', [PpdbController::class, 'import_form'])->name('admin.ppdb.import');
+        Route::post('/import', [PpdbController::class, 'import_post'])->name('admin.ppdb.store');
+        Route::post('/status/{id}', [PpdbController::class, 'ch_status'])->name('admin.ppdb.status');
+        Route::delete('/{id}', [PpdbController::class, 'ppdb_delete'])->name('admin.ppdb.delete');
+    });
 
 
-// Rute untuk sumber daya 'pages' (CRUD pages)
-Route::resource('pages', PageController::class);
-
-
-
-		
+// Page
+Route::resource('pages', 'Admin\PageController');
 
 
 // Siswa
@@ -142,7 +146,33 @@ Route::middleware(['auth'])->group(function () {
     Route::post('siswa-redirect', [StudentController::class, 'siswaRedirect'])->name('admin.siswa-redirect');
 });
 
+});
+
 
  
 Route::get('/register', [UserController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [UserController::class, 'register']);
+
+
+
+
+
+Route::get('admin/berita', 'AdminController@beritaIndex')->name('admin.berita.index');
+Route::get('admin/agenda', 'AdminController@agendaIndex')->name('admin.agenda.index');
+Route::get('admin/siswa', 'AdminController@siswaIndex')->name('admin.siswa.index');
+Route::get('admin/saran', 'AdminController@saranIndex')->name('admin.saran.index');
+
+
+Route::get('admin/dashboard', 'AdminController@dashboard')->name('admin.dashboard');
+Route::get('admin/berita/create', 'AdminController@beritaCreate')->name('admin.berita.create');
+Route::get('admin/berita', 'AdminController@beritaIndex')->name('admin.berita.index');
+Route::get('admin/agenda/create', 'AdminController@agendaCreate')->name('admin.agenda.create');
+Route::get('admin/agenda', 'AdminController@agendaIndex')->name('admin.agenda.index');
+Route::get('admin/ppdb/regular', 'AdminController@ppdbRegular')->name('admin.ppdb.regular');
+Route::get('admin/gallery', 'AdminController@galleryIndex')->name('admin.gallery.index');
+Route::get('admin/siswa', 'AdminController@siswaIndex')->name('admin.siswa.index');
+Route::get('admin/guru', 'AdminController@guruIndex')->name('admin.guru.index');
+Route::get('admin/pesan', 'AdminController@pesanIndex')->name('admin.pesan.index');
+Route::get('admin/home/edit/{id}', 'AdminController@homeEdit')->name('admin.home.edit');
+Route::get('admin/pages/edit/{pages}', 'AdminController@pagesEdit')->name('admin.pages.edit');
+Route::get('admin/setting', 'AdminController@setting')->name('admin.setting');
