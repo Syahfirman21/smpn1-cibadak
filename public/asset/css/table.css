@@ -1,0 +1,38 @@
+.table_post {
+	margin: 0px 0px 50px 0px;
+	height: auto;
+	overflow: scroll;
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+table{
+    border-collapse:collapse;
+    text-align: left;
+    width: 100%;
+}
+th {
+	font-weight: bold;
+	font-size: 18px;
+	background: #fff;
+	padding:25px 10px;
+}
+td {
+	vertical-align: top;
+	padding: 10px;
+	border-top: 2px solid #ccc;
+}
+td img {
+	width: 80px;
+	height: auto;
+}
+.small {
+	width: 5%;
+}
+.one {
+	width: 22%;
+}
+@media screen and (max-width: 605px) {
+	.table_post {
+		overflow-y: auto;
+	}
+}

@@ -1,0 +1,217 @@
+@media screen and (max-width: 1180px) {
+	.kotak_news {
+		width: 48%;
+		margin: 1%;
+	}
+}
+@media screen and (max-width: 1024px) {
+	.agenda_title {
+		width: 70%;
+	}
+	
+}
+@media screen and (max-width: 960px) {
+	.profil_sekolah {
+		float: none;
+		width: 100%;
+		padding: 0;
+	}
+	.agenda {
+		float: none;
+		width: 100%;
+	}
+	.agenda_title {
+		width: 70%;
+	}
+	.welcome_kotak {
+		width: 48%;
+		margin: 1%;
+	}
+	.embed_video {
+		float: none;
+		width: 100%;
+		height: auto;
+	}
+	.embed_video iframe {
+		position: relative;
+	}
+	.deskripsi {
+		float: none;
+		width: 100%;
+	}
+	.gallery, .map {
+		width: 100%;
+		float: none;
+	}
+	.nav {
+		padding: 10px 0;
+		height: auto;
+	}
+	.logo, .menu, .search {
+		float: none;
+		padding-left: 0;
+		width: 100%;
+	}
+	.search form {
+		width: 80%;
+		position: relative;
+		margin: 0 auto;
+	}
+	.search input[type="text"] {
+		width: 100%;
+	}
+	.search button {
+		position: absolute;
+		top: 0;
+		right: -15px;
+	}
+	.post_list, .sidebar {
+		width: 100%;
+		margin: 0px 0px 25px 0px;
+		float: none;
+	}
+}
+@media screen and (max-width: 800px) {
+	.container {
+		width: 90%;
+	}
+	.menu {
+		height: auto;
+	}
+	.menu label {
+		margin-left: 15px;
+		display: inline-block;
+	}
+	.menu input[type="checkbox"] {
+		display: block;
+	}
+	.menu input[type="checkbox"]:checked ~ ul {
+		display: block;
+  		position: absolute;
+		margin-top: 20px;
+		background: #0093dd;
+		width: 100%;
+		z-index: 999;
+	}
+	.menu > ul {
+		display: none;
+	}
+	.menu ul li {
+		float: none;
+		line-height: normal;
+	}
+	.menu ul li a {
+		padding: 10px 0px 10px 20px;
+	}
+	.menu ul ul {
+		margin-left: 50px;
+		width: 80%;
+		box-sizing:border-box;
+		z-index: 50;
+	}
+	.menu ul ul ul {
+		margin-left: -80%;
+
+	}
+	.search input[type="text"] {
+		width: 80%;
+		left: 20px;
+	}
+	.search form {
+		width: 90%;
+		margin-left:20px;
+	}
+	.top_detail {
+		width: 50%;
+	}
+	#welcome p {
+		width: 80%;
+	}
+	.kotak_gallery {
+		width: 100%;
+		float: none;
+		margin: 1% 0%;
+	}
+        .kotak_gallery img {
+		height: auto;
+	}
+	.widget {
+		height: auto;
+	}
+	.widget, .saran {
+		float: none;
+		width: 100%;
+		position: inherit;
+	}
+	.copy_left, .copy_right {
+		float: none;
+		width: 100%;
+		text-align: center;
+	}
+	.popup_isi {
+		text-align: center;
+	}
+	.popup_isi img {
+		float: none;
+		margin-right: 0;
+	}
+	.close-button {
+		height: auto;
+	}
+	.popup_btn {
+		position: initial;
+		margin: 15px auto;
+	}
+}
+@media screen and (max-width: 640px) {
+	.kotak_news {
+		width: 100%;
+		float: none;
+		margin: 0px 0px 15px 0px;
+	}
+}
+@media screen and (max-width: 550px) {
+	.welcome_kotak {
+		float: none;
+		width: 100%;
+		margin: 0px 0px 15px 0px;
+	}
+	.top_detail {
+		width: 100%;
+		margin: 190px 0px 0px 0px;
+	}
+	.container {
+		max-width: 100% !important;
+	}
+	.window {
+		width: 80%;
+	}
+}
+@media screen and (max-width: 500px) {
+	.search {
+		line-height: normal;
+	}
+	.search input[type="text"]{
+		width: 100%;
+	}
+}
+@media screen and (max-width: 390px) {
+	.widget_box {
+		float: none;
+		width: 100%;
+		margin-bottom: 15px;
+	}
+	.saran {
+		height: 330px;
+	}
+	.saran input[type="text"] {
+		width: 100%;
+	}
+	.saran input[type="submit"] {
+		width: 100%;
+		margin: 15px 0;
+	}
+	.social {
+		text-align: center;
+	}
+}
