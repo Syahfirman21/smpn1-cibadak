@@ -41,7 +41,46 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              {!! Form::open(array('url'=>route('admin.setting.updateLink'), 'method'=>'PATCH', 'class'=>'form-horizontal')) !!}
+
+
+              <form action="{{ route('admin.setting.updateLink') }}" method="POST" class="form-horizontal">
+                @method('PATCH') <!-- Gunakan metode PATCH -->
+                @csrf <!-- Sertakan token CSRF -->
+                
+                <div class="form-group">
+                    <label for="fblink" class="col-sm-1 control-label"><i class="fa fa-facebook fa-fw"></i></label>
+                    <div class="col-sm-11">
+                        <input type="text" name="fblink" class="form-control" value="{{ $setting->fblink }}">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="twtlink" class="col-sm-1 control-label"><i class="fa fa-twitter fa-fw"></i></label>
+                    <div class="col-sm-11">
+                        <input type="text" name="twtlink" class="form-control" value="{{ $setting->twtlink }}">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gpluslink" class="col-sm-1 control-label"><i class="fa fa-google-plus fa-fw"></i></label>
+                    <div class="col-sm-11">
+                        <input type="text" name="gpluslink" class="form-control" value="{{ $setting->gpluslink }}">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-1 control-label"></label>
+                    <div class="col-sm-11">
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                    </div>
+                </div>
+            </form>
+            
+
+
+
+
+              {{-- {!! Form::open(array('url'=>route('admin.setting.updateLink'), 'method'=>'PATCH', 'class'=>'form-horizontal')) !!}
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-1 control-label"><i class="fa fa-facebook fa-fw"></i></label>
                   <div class="col-sm-11">
@@ -66,7 +105,7 @@
                     <button class="btn btn-primary">Simpan</button>
                   </div>
                 </div>
-              {!! Form::close() !!}
+              {!! Form::close() !!} --}}
             </div>
             <!-- /.box-body -->
           </div>
@@ -78,7 +117,43 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              {!! Form::open(array('url'=>route('admin.setting.updatePass'), 'method'=>'PATCH', 'class'=>'form-horizontal')) !!}
+
+
+
+              <form action="{{ route('admin.setting.updatePass') }}" method="POST" class="form-horizontal">
+                @method('PATCH') <!-- Gunakan metode PATCH -->
+                @csrf <!-- Sertakan token CSRF -->
+            
+                <div class="form-group">
+                    <label for="password" class="col-sm-3 control-label">Password Lama</label>
+                    <div class="col-sm-9">
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <label for="newPassword" class="col-sm-3 control-label">Password Baru</label>
+                    <div class="col-sm-9">
+                        <input type="password" name="newPassword" class="form-control" required>
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <label for="newPassword_confirmation" class="col-sm-3 control-label">Konfirmasi Password Baru</label>
+                    <div class="col-sm-9">
+                        <input type="password" name="newPassword_confirmation" class="form-control" required>
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <div class="col-sm-9 col-sm-offset-3">
+                        <button type="submit" class="btn btn-primary">Ganti Password</button>
+                    </div>
+                </div>
+            </form>
+            
+            
+              {{-- {!! Form::open(array('url'=>route('admin.setting.updatePass'), 'method'=>'PATCH', 'class'=>'form-horizontal')) !!}
                 <div class="form-group">
                   <label for="inputEmail3" class="col-sm-3 control-label">Password</label>
                   <div class="col-sm-9">
@@ -103,7 +178,7 @@
                     <button class="btn btn-primary">Ganti</button>
                   </div>
                 </div>
-              {!! Form::close() !!}
+              {!! Form::close() !!} --}}
             </div>
             <!-- /.box-body -->
           </div>

@@ -14,7 +14,54 @@
 
 @section('content')
       <div class="box box-primary">
-        {!! Form::open(array('url'=>route('admin.home.update', $home->id), 'method'=>'PATCH')) !!}
+
+
+        <form action="{{ route('admin.home.update', $home->id) }}" method="POST">
+          @method('PATCH') <!-- Gunakan metode PATCH -->
+          @csrf <!-- Sertakan token CSRF -->
+          
+          <div class="box-header with-border">
+              <button type="submit" class="btn btn-primary">Simpan</button>
+          </div>
+          
+          <div class="box-body">
+              @if (session()->has('flash_notification.message'))
+              <div class="alert alert-{{ session()->get('flash_notification.level') }}">
+                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                  {!! session()->get('flash_notification.message') !!}
+              </div>
+              @endif
+      
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                      <h3 class="panel-title">MOTTO Sekolah</h3>
+                  </div>
+                  <div class="panel-body">
+                      <textarea name="profile" id="profile" cols="30" rows="3" class="form-control">{{ $home->profile }}</textarea>
+                  </div>
+              </div>
+      
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                      <h3 class="panel-title">Profile Video Embed</h3>
+                  </div>
+                  <div class="panel-body">
+                      <textarea name="embed" id="embed" cols="30" rows="3" class="form-control">{{ $home->embed }}</textarea>
+                  </div>
+              </div>
+      
+              <div class="panel panel-default">
+                  <div class="panel-heading">
+                      <h3 class="panel-title">Konten Profile</h3>
+                  </div>
+                  <div class="panel-body">
+                      <textarea name="profileSekolah" id="profileSekolah" cols="30" rows="3" class="form-control">{{ $home->profileSekolah }}</textarea>
+                  </div>
+              </div>
+          </div>
+      </form>
+      
+        {{-- {!! Form::open(array('url'=>route('admin.home.update', $home->id), 'method'=>'PATCH')) !!}
         <div class="box-header with-border">
           <button class="btn btn-primary">Simpan</button>
         </div>
@@ -50,6 +97,6 @@
             </div>
           </div>
         </div>
-        {!! Form::close() !!}
+        {!! Form::close() !!} --}}
       </div>
 @stop

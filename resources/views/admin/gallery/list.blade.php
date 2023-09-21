@@ -26,7 +26,33 @@
           <a href="#add-category" class="btn btn-primary btn-sm pull-right" data-toggle="modal">Tambah Kategori</a>
         </div>
         <div class="box-body">
-          {!! Form::open(array('url'=>route('admin.gallery.store'), 'files'=>true, 'method'=>'post')) !!}
+
+          <form action="{{ route('admin.gallery.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf <!-- Sertakan token CSRF -->
+        
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <select name="category" class="form-control">
+                            <option value="0">Select Category</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->kategori }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="file" class="form-control" name="img">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary btn-flat" type="submit">Upload</button>
+                        </span>
+                    </div><!-- /input-group -->
+                </div>
+            </div>
+        </form>
+        
+          {{-- {!! Form::open(array('url'=>route('admin.gallery.store'), 'files'=>true, 'method'=>'post')) !!}
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
@@ -47,7 +73,7 @@
                 </div><!-- /input-group -->
               </div>
             </div>
-          {!! Form::close() !!}
+          {!! Form::close() !!} --}}
           @if (session()->has('flash_notification.message'))
           <!-- alert start -->
           <div class="alert alert-{{ session()->get('flash_notification.level') }} alert-dismissible">
@@ -75,9 +101,17 @@
               <div class="col-md-4">
                 <div class="list-gallery">
                   <div class="action">
-                   {!! Form::open(array('url'=>route('admin.gallery.destroy', $n->id), 'method'=>'delete')) !!}
+
+                    <form action="{{ route('admin.gallery.destroy', $n->id) }}" method="POST">
+                      @csrf <!-- Sertakan token CSRF -->
+                      @method('DELETE') <!-- Gunakan metode DELETE -->
+                  
+                      <button type="submit"><i class="fa fa-trash"></i></button>
+                  </form>
+                  
+                   {{-- {!! Form::open(array('url'=>route('admin.gallery.destroy', $n->id), 'method'=>'delete')) !!}
                     <button><i class="fa fa-trash"></i></button>
-                   {!! Form::close() !!}
+                   {!! Form::close() !!} --}}
                   </div>
                   <img src="{{ asset('upload/'.$n->img) }}" alt="">
                 </div>
@@ -91,7 +125,13 @@
       <div class="modal fade" id="add-category">
         <div class="modal-dialog">
           <div class="modal-content">
-            {!! Form::open(['url'=> route('admin.gallery.addCategory'), 'method'=>'post']) !!}
+            <form action="{{ route('admin.gallery.addCategory') }}" method="POST">
+              @csrf <!-- Sertakan token CSRF -->
+          
+              <!-- Isi form Anda di sini -->
+          
+          </form>
+          
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
               <h4 class="modal-title">Tambah Kategori</h4>
@@ -99,14 +139,31 @@
             <div class="modal-body">
               <div class="form-group">
                 <label class="label-control">Kategori</label>
-                {!! Form::text('kategori', null, ['class'=>'form-control']) !!}
+{{-- 
+                <form action="{{ route('route_name') }}" method="POST" class="form-horizontal">
+                  @csrf <!-- Sertakan token CSRF --> --}}
+              
+                  <div class="form-group">
+                      <label for="kategori" class="col-sm-3 control-label">Kategori</label>
+                      <div class="col-sm-9">
+                          <input type="text" name="kategori" class="form-control" value="{{ old('kategori') }}" required>
+                      </div>
+                  </div>
+              
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Tambah Kategori</button>
+                  </div>
+              </form>
+              
+                {{-- {!! Form::text('kategori', null, ['class'=>'form-control']) !!}
               </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
               <button type="submit" class="btn btn-primary">Tambah Kategori</button>
             </div>
-            {!! Form::close() !!}
+            {!! Form::close() !!} --}}
           </div>
         </div>
       </div>

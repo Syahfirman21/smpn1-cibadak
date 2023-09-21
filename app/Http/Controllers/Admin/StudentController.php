@@ -162,6 +162,7 @@ class StudentController extends Controller
             'id'=>$class_id,
             'kelas'=>$kelas
         ]);
+        
     }
 
     public function destroyAll($id, $kelas)
@@ -173,4 +174,5 @@ class StudentController extends Controller
         ]);
         return redirect()->route('admin.kelas.tampil', ['id'=>$id, 'kelas'=>$kelas]);
     }
+    
 }

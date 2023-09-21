@@ -26,8 +26,9 @@
 			</div>
 			<!-- search -->
 			<div class="search">
-				<form action="" method="POST" autocomplete="off">
-					<input type="text" placeholder="Search..." name="keyword" >
+				<form action="{{ route('berita.search-redirect') }}" method="POST">
+					@csrf
+					<input type="text" placeholder="Search..." name="keyword" autocomplete="off" />
 					<button type="submit"></button>
 				</form>
 			</div>

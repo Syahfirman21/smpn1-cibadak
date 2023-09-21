@@ -62,7 +62,51 @@
                 {!! session()->get('flash_notification.message') !!}
               </div>
               @endif
-              {!! Form::open(array('url'=>route('admin.siswa.import'), 'method'=>'post', 'class'=>'form-horizontal', 'files'=>true)) !!}
+
+              <form action="{{ route('admin.siswa.import') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                @csrf <!-- Sertakan token CSRF -->
+            
+                <div class="form-group">
+                    <label for="dataSiswa" class="col-sm-1 control-label">File</label>
+                    <div class="col-sm-11">
+                        <input type="file" name="dataSiswa" id="dataSiswa">
+                    </div>
+                </div>
+            
+                <div class="form-group">
+                    <label for="note" class="col-sm-1 control-label">Note</label>
+                    <div class="col-sm-11">
+                        <div class="well well-sm">
+                            <ul>
+                                <li>File harus berformat (.csv)</li>
+                                <li>Susun siswa dalam file secara benar, ikuti <a data-toggle="modal" href='#modal-id'>Tutorial</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            
+                @if(count($errors->all()) > 0)
+                <div class="form-group">
+                    <label for="errors" class="col-sm-1 control-label"></label>
+                    <div class="col-sm-11">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{!! $error !!}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                @endif
+            
+                <div class="form-group">
+                    <label for="submit" class="col-sm-1 control-label"></label>
+                    <div class="col-sm-11">
+                        <button class="btn btn-primary" type="submit">Import</button>
+                    </div>
+                </div>
+            </form>
+            
+              {{-- {!! Form::open(array('url'=>route('admin.siswa.import'), 'method'=>'post', 'class'=>'form-horizontal', 'files'=>true)) !!}
               <div class="form-group">
                  <label for="inputEmail3" class="col-sm-1 control-label">File</label>
                 <div class="col-sm-11">
@@ -94,7 +138,7 @@
                   <button class="btn btn-primary">Import</button>
                 </div>
               </div>
-            {!! Form::close() !!}
+            {!! Form::close() !!} --}}
             </div><!-- /.box-body -->
           </div><!-- /.box -->
 @stop

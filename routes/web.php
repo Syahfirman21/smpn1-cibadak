@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\SaranPesanController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
@@ -11,14 +12,15 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SearchController;
-
+use App\Http\Controllers\AdminController;
 
 use App\Http\Controllers\Admin\GlobalAdminController;
 use App\Http\Controllers\Admin\BeritaController;
 use App\Http\Controllers\Admin\AgendaAdminController;
+use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\Admin\GuruController;
-
-
+use App\Http\Controllers\Admin\PageController as AdminPageController;
+use App\Http\Controllers\Admin\StudentController as AdminStudentController;
 use App\Http\Controllers\UserController;
 
 
@@ -99,10 +101,12 @@ Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
 
 
-
 // Search
-Route::get('/search', [SearchController::class, 'search'])->name('search');
-Route::post('/search-redirect', [SearchController::class, 'searchRedirect'])->name('berita.search-redirect');
+Route::get('search/{keyword}', 'SearchController@search')->name('search');
+Route::post('/search-redirect',[SearchController::class,'search'])->name('berita.search-redirect');
+
+
+
 
 
 // admin
@@ -139,11 +143,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('siswa', [StudentController::class, 'index'])->name('admin.siswa.index');
     Route::delete('siswa/{id}/{kelas}', [StudentController::class, 'destroyAll'])->name('admin.siswa.destroyAll');
     Route::get('siswa/{id}/{kelas}', [StudentController::class, 'tampil'])->name('admin.kelas.tampil');
-    Route::get('siswa/import', [StudentController::class, 'importIndex'])->name('admin.siswa.importIndex');
+    Route::get('siswa/import', [AdminStudentController::class, 'importIndex'])->name('admin.siswa.importIndex');
     Route::post('siswa/imported', [StudentController::class, 'import'])->name('admin.siswa.import');
     Route::delete('siswa/{id}/{kelas}/{class_id}', [StudentController::class, 'destroy'])->name('admin.siswa.destroy');
     
-    Route::post('siswa-redirect', [StudentController::class, 'siswaRedirect'])->name('admin.siswa-redirect');
+    Route::post('siswa-redirect', [AdminStudentController::class, 'siswaRedirect'])->name('admin.siswa-redirect');
 });
 
 });
@@ -157,22 +161,161 @@ Route::post('/register', [UserController::class, 'register']);
 
 
 
-Route::get('admin/berita', 'AdminController@beritaIndex')->name('admin.berita.index');
-Route::get('admin/agenda', 'AdminController@agendaIndex')->name('admin.agenda.index');
+Route::get('admin/berita',[BeritaController::class,'index']);
+Route::get('admin/agenda', [AgendaAdminController::class,'store'])->name('admin.agenda.store');
 Route::get('admin/siswa', 'AdminController@siswaIndex')->name('admin.siswa.index');
 Route::get('admin/saran', 'AdminController@saranIndex')->name('admin.saran.index');
 
 
-Route::get('admin/dashboard', 'AdminController@dashboard')->name('admin.dashboard');
-Route::get('admin/berita/create', 'AdminController@beritaCreate')->name('admin.berita.create');
-Route::get('admin/berita', 'AdminController@beritaIndex')->name('admin.berita.index');
-Route::get('admin/agenda/create', 'AdminController@agendaCreate')->name('admin.agenda.create');
-Route::get('admin/agenda', 'AdminController@agendaIndex')->name('admin.agenda.index');
-Route::get('admin/ppdb/regular', 'AdminController@ppdbRegular')->name('admin.ppdb.regular');
-Route::get('admin/gallery', 'AdminController@galleryIndex')->name('admin.gallery.index');
-Route::get('admin/siswa', 'AdminController@siswaIndex')->name('admin.siswa.index');
-Route::get('admin/guru', 'AdminController@guruIndex')->name('admin.guru.index');
-Route::get('admin/pesan', 'AdminController@pesanIndex')->name('admin.pesan.index');
-Route::get('admin/home/edit/{id}', 'AdminController@homeEdit')->name('admin.home.edit');
-Route::get('admin/pages/edit/{pages}', 'AdminController@pagesEdit')->name('admin.pages.edit');
-Route::get('admin/setting', 'AdminController@setting')->name('admin.setting');
+Route::group(['prefix' => 'admin'], function () {
+    Route::get('berita/index', 'AdminController@beritaIndex')->name('admin.berita.index');
+    Route::get('agenda/index', 'AdminController@agendaIndex')->name('admin.agenda.index');
+    Route::get('siswa/index', 'AdminController@siswaIndex')->name('admin.siswa.index');
+    Route::get('saran/index', 'AdminController@saranIndex')->name('admin.saran.index');
+});
+
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Route::get('dashboard', 'AdminController@dashboard')->name('admin.dashboard');
+    
+// Admin Berita
+    Route::prefix('berita')->group(function () {
+        Route::get('create', [BeritaController::class ,'create'])->name('admin.berita.create');
+        Route::post('berita/store', [BeritaController::class, 'store'])->name('admin.berita.store');
+        Route::get('berita/store', [BeritaController::class, 'store'])->name('admin.berita.store');
+       
+    });
+    
+
+    // Admin Agenda
+    Route::prefix('agenda')->group(function () {
+        Route::get('create',[AgendaAdminController::class,'create'])->name('admin.agenda.create');
+        Route::post('store',[AgendaAdminController::class,'store'] ) ->name('admin.agenda.store');
+    });
+
+   
+
+
+    
+   Route::group(['prefix' => 'admin'], function () {
+    // ... Route lainnya di dalam group admin ...
+
+    // Definisi route untuk PpdbController
+    Route::get('ppdb', [PpdbController::class, 'index'])->name('admin.ppdb.index');
+    Route::get('ppdb/import', [PpdbController::class, 'import_form'])->name('admin.ppdb.import');
+    Route::post('ppdb/import', [PpdbController::class, 'import_post'])->name('admin.ppdb.import.post');
+    Route::get('ppdb/status/{id}', [PpdbController::class, 'ch_status'])->name('admin.ppdb.status');
+    Route::post('ppdb/regular', [PpdbController::class, 'postRegular'])->name('admin.ppdb.regular');
+    Route::get('ppdb/delete/{id}', [PpdbController::class, 'ppdb_delete'])->name('admin.ppdb.delete');
+
+    // ... Route lainnya di dalam group admin ...
+});
+    
+   
+
+    
+    Route::get('siswa/index', [AdminStudentController::class,'index'])->name('admin.siswa.index');
+
+
+
+// Admin Gallery
+    Route::get('admin/gallery',[AdminGalleryController::class,'index'])->name('admin.gallery.index');
+    Route::post('/gallery/store', [AdminGalleryController::class, 'storeGallery'])->name('admin.gallery.store');
+    Route::delete('/admin/gallery/{id}',[AdminGalleryController::class,'destroy'])->name('admin.gallery.destroy');
+    Route::post('/your/route/url',[AdminGalleryController::class,''])->name('route_name');
+    Route::post('/admin/gallery/store', [AdminGalleryController::class, 'show'])->name('admin.gallery.shows');
+
+
+
+    Route::get('guru/index',[AdminGuruController::class,'index'])->name('admin.guru.index');
+    
+    Route::prefix('pesan')->group(function () {
+        Route::get('index',[SaranPesanController::class,'index'])->name('admin.pesan.index');
+    });
+    
+    Route::get('home/edit/{id}', 'HomeController@edit')->name('admin.home.edit');
+    
+    Route::prefix('pages')->group(function () {
+        Route::get('edit/{pages}', 'PagesController@edit')->name('admin.pages.edit');
+    });
+    
+    Route::get('setting', 'SettingController@index')->name('admin.setting');
+});
+
+
+
+// Route::prefix('admin')->group(function () {
+//     Route::get('dashboard', [GlobalAdminController::class, 'dashboard'])->name('admin.dashboard');
+//     Route::get('berita/create', [GlobalAdminController::class, 'beritaCreate'])->name('admin.berita.create');
+//     Route::get('berita', [BeritaController::class, 'index'])->name('admin.berita.index');
+//     Route::get('agenda/create', [GlobalAdminController::class, 'agendaCreate'])->name('admin.agenda.create');
+//     Route::get('agenda', [GlobalAdminController::class, 'agendaIndex'])->name('admin.agenda.index');
+//     Route::get('ppdb/regular', [GlobalAdminController::class, 'ppdbRegular'])->name('admin.ppdb.regular');
+//     Route::get('gallery', [GlobalAdminController::class, 'galleryIndex'])->name('admin.gallery.index');
+//     Route::get('siswa', [GlobalAdminController::class, 'siswaIndex'])->name('admin.siswa.index');
+//     Route::get('guru', [GuruController::class, 'index'])->name('admin.guru.index');
+//     Route::get('pesan', [GlobalAdminController::class, 'pesanIndex'])->name('admin.pesan.index');
+//     Route::get('home/edit/{id}', [GlobalAdminController::class, 'homeEdit'])->name('admin.home.edit');
+//     // Route::get('pages/edit/{pages}', [GlobalAdminController::class, 'pagesEdit'])->name('admin.pages.edit');
+//     Route::get('setting', [GlobalAdminController::class, 'setting'])->name('admin.setting');
+// });
+
+
+Route::prefix('admin')->group(function () {
+    Route::get('dashboard', [GlobalAdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('home/edit/{id}', [GlobalAdminController::class, 'editHome'])->name('admin.home.edit');
+    Route::post('home/update/{id}', [GlobalAdminController::class, 'updateHome'])->name('admin.home.update');
+    Route::get('setting', [GlobalAdminController::class, 'settingSite'])->name('admin.setting');
+    Route::post('setting/update-link', [GlobalAdminController::class, 'updateLink'])->name('admin.setting.update-link');
+    Route::post('setting/update-password', [GlobalAdminController::class, 'updatePass'])->name('admin.setting.update-password');
+});
+
+Route::prefix('admin')->group(function () {
+    // Rute untuk menangani permintaan POST dari formulir
+    Route::post('setting/update-link', [GlobalAdminController::class, 'updateLink'])->name('admin.setting.updateLink');
+    Route::post('setting/update-password', [GlobalAdminController::class, 'updatePass'])->name('admin.setting.updatePass');
+});
+
+
+
+Route::prefix('admin')->group(function () {
+    // Rute untuk mengedit halaman berdasarkan 'pages' yang diberikan
+    Route::get('pages/edit/{pages}', [AdminPageController::class, 'index'])->name('admin.pages.edit');
+
+    // Rute untuk mengedit halaman Sambutan Kepala
+    Route::get('pages/edit/sambutan', [AdminPageController::class, 'edit'])->name('admin.pages.edit.sambutan');
+
+    // Rute untuk mengedit halaman Profil Kepala Sekolah
+    Route::get('pages/edit/kepalaSekolah', [AdminController::class, 'pagesEdit'])->name('admin.pages.edit.kepalaSekolah');
+
+    // Rute untuk mengedit halaman About Page
+    Route::get('pages/edit/about', [AdminController::class, 'pagesEdit'])->name('admin.pages.edit.about');
+
+    // Rute untuk mengedit halaman Profil Page
+    Route::get('pages/edit/profil', [AdminController::class, 'pagesEdit'])->name('admin.pages.edit.profil');
+
+    // Rute untuk mengedit halaman Visi Misi Page
+    Route::get('pages/edit/visiMisi', [AdminController::class, 'pagesEdit'])->name('admin.pages.edit.visiMisi');
+
+    // Rute untuk mengedit halaman Organisasi Page
+    Route::get('pages/edit/organisasi', [AdminController::class, 'pagesEdit'])->name('admin.pages.edit.organisasi');
+
+    // Rute untuk mengedit halaman Ekstrakulikuler Page
+    Route::get('pages/edit/ekskul', [AdminController::class, 'pagesEdit'])->name('admin.pages.edit.ekskul');
+
+    // Rute untuk mengedit halaman Fasilitas Page
+    Route::get('pages/edit/fasilitas', [AdminController::class, 'pagesEdit'])->name('admin.pages.edit.fasilitas');
+
+    // Rute untuk mengedit halaman Prestasi Page
+    Route::get('pages/edit/prestasi', [AdminController::class, 'pagesEdit'])->name('admin.pages.edit.prestasi');
+
+    // Rute untuk mengedit halaman Jadwal Pelajaran Page
+    Route::get('pages/edit/jadwalPelajaran', [AdminController::class, 'pagesEdit'])->name('admin.pages.edit.jadwalPelajaran');
+
+    // Rute untuk menghandle permintaan PATCH dari formulir edit home
+    Route::patch('home/update/{id}', [GlobalAdminController::class, 'updateHome'])->name('admin.home.update');
+});
+
+Route::patch('/admin/setting/updatePass',[GlobalAdminController::class,'updatePass'])->name('admin.setting.updatePass');
+

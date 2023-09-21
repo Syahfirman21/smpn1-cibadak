@@ -64,7 +64,7 @@ class BeritaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function show(Request $request)
     {
         $this->validate($request,[
             'title'=>'required|max:255',

@@ -91,30 +91,31 @@ class GlobalAdminController extends Controller
     }
 
     public function updatePass(Request $request)
-    {
-        $this->validate($request, [
-            'password' => 'required|min:6',
-            'newPassword' => 'required|min:6|confirmed',
-        ]);
+{
+    $this->validate($request, [
+        'password' => 'required|min:6',
+        'newPassword' => 'required|min:6|confirmed',
+    ]);
 
-        if (!password_verify($request->password, Auth::user()->password)) {
-            Session::flash("flash_notification", [
-                "level" => "danger",
-                "message" => "Password lama tidak valid"
-            ]);
-            return redirect()->route('admin.setting');
-        }
-
-        $user = Auth::user();
-        $user->update([
-            'password' => bcrypt($request->newPassword),
-        ]);
-
+    if (!password_verify($request->password, Auth::user()->password)) {
         Session::flash("flash_notification", [
-            "level" => "success",
-            "message" => "Password berhasil diganti"
+            "level" => "danger",
+            "message" => "Password lama tidak valid"
         ]);
-
         return redirect()->route('admin.setting');
     }
+
+    $user = Auth::user();
+    $user->update([
+        'password' => bcrypt($request->newPassword),
+    ]);
+
+    Session::flash("flash_notification", [
+        "level" => "success",
+        "message" => "Password berhasil diganti"
+    ]);
+
+    return redirect()->route('admin.setting');
+}
+
 }

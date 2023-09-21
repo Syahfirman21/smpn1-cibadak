@@ -1,4 +1,4 @@
-<?php
+aut<?php
 
 namespace App\Http\Middleware;
 

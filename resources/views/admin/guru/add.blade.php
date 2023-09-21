@@ -19,7 +19,55 @@
           <h3 class="box-title">Tambah Guru</h3>
         </div>
         <div class="box-body">
-          {!! Form::open(array('url'=>route('admin.guru.store'), 'files'=>true, 'method'=>'post', 'class'=>'form-horizontal')) !!}
+
+
+          <form action="{{ route('admin.guru.store') }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+    @csrf
+    <div class="form-group">
+        <label for="nama" class="col-sm-1 control-label">Nama</label>
+        <div class="col-sm-11">
+            <input type="text" class="form-control" name="nama" value="{{ old('nama') }}" id="nama">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="thumbnail" class="col-sm-1 control-label">Foto</label>
+        <div class="col-sm-11">
+            <input type="file" class="form-control" name="thumbnail" id="thumbnail">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="nip" class="col-sm-1 control-label">NIP</label>
+        <div class="col-sm-11">
+            <input type="text" class="form-control" name="nip" value="{{ old('nip') }}" id="nip">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="mapel" class="col-sm-1 control-label">Pelajaran</label>
+        <div class="col-sm-11">
+            <input type="text" class="form-control" name="mapel" value="{{ old('mapel') }}" id="mapel">
+        </div>
+    </div>
+    @if($errors->any())
+    <div class="form-group">
+        <label for="inputEmail3" class="col-sm-1 control-label"></label>
+        <div class="col-sm-11">
+            <ul>
+                @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    </div>
+    @endif
+    <div class="form-group">
+        <label for="inputEmail3" class="col-sm-1 control-label"></label>
+        <div class="col-sm-11">
+            <button class="btn btn-primary">Tambah (<i class="fa fa-plus"></i>)</button>
+        </div>
+    </div>
+</form>
+
+          {{-- {!! Form::open(array('url'=>route('admin.guru.store'), 'files'=>true, 'method'=>'post', 'class'=>'form-horizontal')) !!}
             <div class="form-group">
                <label for="inputEmail3" class="col-sm-1 control-label">Nama</label>
               <div class="col-sm-11">
@@ -58,7 +106,7 @@
                 <button class="btn btn-primary">Tambah (<i class="fa fa-plus"></i>)</button>
               </div>
             </div>
-          {!! Form::close() !!}
+          {!! Form::close() !!} --}}
         </div>
       </div>
 @stop

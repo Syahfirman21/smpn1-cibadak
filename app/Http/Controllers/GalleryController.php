@@ -22,8 +22,14 @@ class GalleryController extends Controller
     	return view('themes.catgal', $data);
     }
 
-    public function showImg($kategori, $img) {
-    	$data['img'] = Gallery::where('galcategory_id', $kategori)->where('img', $img)->first();
-    	return view('partials._imagebox', $data);
-    }
+
+	public function show($kategori, $img) {
+		$data['img'] = Gallery::where('galcategory_id', $kategori)->where('img', $img)->first();
+		return view('partials._imagebox', $data);
+	}
+	
+    // public function showImg($kategori, $img) {
+    // 	$data['img'] = Gallery::where('galcategory_id', $kategori)->where('img', $img)->first();
+    // 	return view('partials._imagebox', $data);
+    // }
 }
